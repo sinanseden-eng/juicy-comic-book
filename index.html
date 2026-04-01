@@ -64,24 +64,23 @@
         const Loader2 = (props) => <Icon {...props}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></Icon>;
 
         // --- DATA ---
-        // Pointing directly to your Juicy comic book repository so images load globally!
+        // Pointing directly to your Juicy comic book repository
         const REPO_BASE_URL = "https://raw.githubusercontent.com/sinanseden-eng/juicy-comic-book/main/";
-        const CACHE_BUSTER = "?v=1";
+        const CACHE_BUSTER = "?v=3"; 
         
-        // 12-page structure with perfectly synced timestamps
         const pages = [
             { id: 1, type: "intro", bgColor: "bg-neutral-950", timestamp: 0 },
-            { id: 2, image: `${REPO_BASE_URL}2.jpg${CACHE_BUSTER}`, bgColor: "bg-stone-900", timestamp: 22 },
-            { id: 3, image: `${REPO_BASE_URL}3.jpg${CACHE_BUSTER}`, bgColor: "bg-red-950", timestamp: 36 },
-            { id: 4, image: `${REPO_BASE_URL}4.jpg${CACHE_BUSTER}`, bgColor: "bg-yellow-900", timestamp: 47 },
-            { id: 5, image: `${REPO_BASE_URL}5.jpg${CACHE_BUSTER}`, bgColor: "bg-indigo-950", timestamp: 65 },
-            { id: 6, image: `${REPO_BASE_URL}6.jpg${CACHE_BUSTER}`, bgColor: "bg-amber-950", timestamp: 91 },
-            { id: 7, image: `${REPO_BASE_URL}7.jpg${CACHE_BUSTER}`, bgColor: "bg-orange-900", timestamp: 113 },
-            { id: 8, image: `${REPO_BASE_URL}8.jpg${CACHE_BUSTER}`, bgColor: "bg-blue-950", timestamp: 139 },
-            { id: 9, image: `${REPO_BASE_URL}9.jpg${CACHE_BUSTER}`, bgColor: "bg-emerald-950", timestamp: 161 },
-            { id: 10, image: `${REPO_BASE_URL}10.jpg${CACHE_BUSTER}`, bgColor: "bg-fuchsia-950", timestamp: 182 },
-            { id: 11, image: `${REPO_BASE_URL}11.jpg${CACHE_BUSTER}`, bgColor: "bg-yellow-600", timestamp: 195 },
-            { id: 12, image: `${REPO_BASE_URL}12.jpg${CACHE_BUSTER}`, bgColor: "bg-sky-600", timestamp: 208 }
+            { id: 2, image: `${REPO_BASE_URL}2.jpg${CACHE_BUSTER}`, bgColor: "bg-stone-900", timestamp: 8 },    // 0:08 - The Hustle (Beat drops)
+            { id: 3, image: `${REPO_BASE_URL}3.jpg${CACHE_BUSTER}`, bgColor: "bg-red-950", timestamp: 23 },   // 0:23 - The Dream ("It was all a dream...")
+            { id: 4, image: `${REPO_BASE_URL}4.jpg${CACHE_BUSTER}`, bgColor: "bg-yellow-900", timestamp: 38 },  // 0:38 - The Lumberjack ("Red and black lumberjack...")
+            { id: 5, image: `${REPO_BASE_URL}5.jpg${CACHE_BUSTER}`, bgColor: "bg-indigo-950", timestamp: 66 },  // 1:06 - The City (Chorus starts)
+            { id: 6, image: `${REPO_BASE_URL}6.jpg${CACHE_BUSTER}`, bgColor: "bg-amber-950", timestamp: 92 },  // 1:32 - The Change ("Made the change from a common thief...")
+            { id: 7, image: `${REPO_BASE_URL}7.jpg${CACHE_BUSTER}`, bgColor: "bg-orange-900", timestamp: 113 }, // 1:53 - Coast to Coast ("Now honeys play me close...")
+            { id: 8, image: `${REPO_BASE_URL}8.jpg${CACHE_BUSTER}`, bgColor: "bg-blue-950", timestamp: 161 }, // 2:41 - The Genesis ("Super Nintendo, Sega Genesis...")
+            { id: 9, image: `${REPO_BASE_URL}9.jpg${CACHE_BUSTER}`, bgColor: "bg-emerald-950", timestamp: 184 }, // 3:04 - Mom's Pride ("Thinking back on my one-room shack...")
+            { id: 10, image: `${REPO_BASE_URL}10.jpg${CACHE_BUSTER}`, bgColor: "bg-fuchsia-950", timestamp: 196 }, // 3:16 - The Celebration ("Birthdays was the worst days...")
+            { id: 11, image: `${REPO_BASE_URL}11.jpg${CACHE_BUSTER}`, bgColor: "bg-yellow-600", timestamp: 208 }, // 3:28 - Negative to Positive ("Damn right I like the life I live...")
+            { id: 12, image: `${REPO_BASE_URL}12.jpg${CACHE_BUSTER}`, bgColor: "bg-sky-600", timestamp: 221 }  // 3:41 - The Top / NYC (Final Chorus fades out)
         ];
 
         // --- APP ---
@@ -333,11 +332,13 @@
                                     {/* The keyed element handles the fade transition for images ONLY */}
                                     <div key={currentPage} className={`absolute inset-0 flex items-center justify-center animate-in fade-in zoom-in-95 duration-500 ${currentData.bgColor} p-4 sm:p-8`}>
                                         
-                                        {/* Image Placeholder / Error State */}
-                                        <div className="absolute text-center opacity-50 z-0 border border-dashed border-white/30 p-6 rounded bg-black/30 backdrop-blur-sm">
-                                            <div className="text-xl font-bold font-mono text-white/80">SYS.IMG_MISSING</div>
-                                            <div className="text-sm font-mono text-white/60 mt-1">Check Repo for: <span className="text-yellow-400">{currentPage + 1}.jpg</span></div>
-                                        </div>
+                                        {/* Image Placeholder - Hidden on Intro Page */}
+                                        {currentData.type !== 'intro' && (
+                                            <div className="absolute text-center opacity-50 z-0 border border-dashed border-white/30 p-6 rounded bg-black/30 backdrop-blur-sm">
+                                                <div className="text-xl font-bold font-mono text-white/80">SYS.IMG_MISSING</div>
+                                                <div className="text-sm font-mono text-white/60 mt-1">Upload as: <span className="text-yellow-400">{currentPage + 1}.jpg</span></div>
+                                            </div>
+                                        )}
 
                                         {currentData.image && !imageError && (
                                             <img 
@@ -370,10 +371,10 @@
                                         <div id="youtube-player" className="absolute inset-0 w-full h-full pointer-events-none"></div>
                                         
                                         {audioStatus === 'error' && (
-                                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black text-center p-4">
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black text-center p-4 z-50">
                                                 <AlertCircle size={32} className="text-red-500 mb-2" />
-                                                <p className="text-white font-mono text-sm">YouTube connection blocked by Sandbox.</p>
-                                                <p className="text-gray-400 font-mono text-xs mt-1">Export this file to a standard browser to view the synced lyrics.</p>
+                                                <p className="text-white font-mono text-sm">YouTube connection blocked by Network.</p>
+                                                <p className="text-gray-400 font-mono text-xs mt-1">Export this file to a personal device/browser to view the synced lyrics.</p>
                                             </div>
                                         )}
 
